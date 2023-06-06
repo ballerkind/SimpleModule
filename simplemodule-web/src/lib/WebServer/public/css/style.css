@@ -1,0 +1,367 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+/* ################################################################################# */
+/* STANDARD HTML TAGS */
+/* ################################################################################# */
+
+html, body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: "Raleway", sans-serif;
+}
+
+body {
+	/*border-top: 2px solid #2196F3;*/
+}
+
+/* ################################################################################# */
+/* NAVIGATION */
+/* ################################################################################# */
+
+#nav {
+	position: absolute;
+	width: 240px;
+	height: 100%;
+	box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.3);
+	z-index: 1;
+}
+
+#nav > #logo {
+	padding: 15px 0;
+	margin: 0;
+	color: #fff;
+	font-size: 25px;
+	text-align: center;
+	background: rgba(0, 0, 0, 0.3);
+}
+
+#nav > ul {
+	padding: 16px 0 0 0;
+	margin-top: 0;
+	list-style: none;
+	height: calc(100% - 120px);
+	overflow-y: auto;
+}
+
+#nav > ul > span {
+	display: block;
+	margin: 25px 0 10px 15px;
+	color: #CCC;
+}
+
+#nav > ul > span:first-child {
+	margin-top: 9px;
+}
+
+#nav > ul > li > a,
+#nav > ul > li > span {
+	display: block;
+	padding: 8px 30px;
+	color: #EDEDED;
+	font-size: 18px;
+	text-decoration: none;
+}
+
+#nav > ul > li > a.active {
+	color: #fff;
+	background: rgba(0, 0, 0, 0.15);
+	border-left: 3px solid #3498DB;
+}
+
+#nav > ul > li > a:hover {
+	color: #fff;
+	background: rgba(0, 0, 0, 0.2);
+}
+
+#nav > ul > li > a > i {
+	margin-right: 5px;
+}
+
+#nav > ul > li > a > .arrow {
+	float: right;
+	transition: 0.5s;
+}
+
+#nav > ul > li > a > .rotate {
+	transform: rotate(180deg);
+}
+
+/* UNTERMENU */
+
+#nav > ul > li > ul {
+	padding: 0;
+	list-style: none;
+}
+
+#nav > ul > li > ul > span {
+	display: block;
+	padding: 8px 0 5px 20px;
+	color: #CCC;
+}
+
+#nav > ul > li > ul > li > a {
+	display: block;
+	padding: 8px 30px 8px 60px;
+	font-size: 18px;
+	text-decoration: none;
+	color: #DDD;
+}
+
+#nav > ul > li > ul > li > a.active {
+	border-left: 3px solid #2ECC71;
+	color: #fff;
+}
+
+#nav > ul > li > ul > li > a:hover {
+	color: #fff;
+	background: rgba(0, 0, 0, 0.1);
+}
+
+/* FOOTER */
+
+#nav > #footer {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	text-align: center;
+	font-size: 12px;
+	color: #fff;
+}
+
+/* ################################################################################# */
+/* CONTENT */
+/* ################################################################################# */
+
+#content {
+	position: relative;
+	height: 100%;
+	margin-left: 240px;
+	overflow-y: auto;
+}
+
+#content::before {
+	position: absolute;
+	width: 100%;
+	height: 250px;
+	content: '';
+}
+
+#content > #navbar {
+	position: absolute;
+	left: 0;
+	right: 0;
+	padding: 21px;
+	color: #fff;
+	font-family: Roboto, sans-serif;
+}
+
+#content > #navbar > i {
+	display: none;
+}
+
+#content > #title {
+	position: relative;
+	margin: 100px 15px 10px 25px;
+	font-size: 25px;
+	color: #fff;
+}
+
+#content > .title {
+	margin: 10px 15px 10px 25px;
+	font-size: 20px;
+}
+
+#content > .container {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#content > .container > .panel {
+	margin: 15px;
+	min-width: 280px;
+	border-left: 3px solid #2196F3;
+	box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.15);
+	z-index: 0;
+}
+
+#content > .container > .panel.red {
+	border-color: #F44336;
+}
+
+#content > .container > .panel.green {
+	border-color: #4CAF50;
+}
+
+#content > .container > .panel.orange {
+	border-color: #FF9800;
+}
+
+#content > .container > .panel.flex-1 {
+	flex: 1;
+}
+
+#content > .container > .panel.flex-2 {
+	flex: 2;
+}
+
+#content > .container > .panel.flex-3 {
+	flex: 3;
+}
+
+#content > .container > .panel > .header {
+	padding: 20px;
+	border-bottom: 1px solid #CCC;
+	font-size: 20px;
+}
+
+#content > .container > .panel > .content {
+	padding: 15px;
+}
+
+/* ################################################################################# */
+/* Button */
+/* ################################################################################# */
+
+.btn {
+	padding: 10px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	font-family: "Raleway", sans-serif;
+	font-size: 16px;
+	cursor: pointer;
+	color: #fff;
+	background: #2980B9;
+}
+
+.btn:not(:disabled):hover {
+	opacity: 0.8;
+}
+
+.btn:disabled {
+	color: #444444;
+	background: #333333;
+}
+
+/* ################################################################################# */
+/* Input */
+/* ################################################################################# */
+
+.input-group {
+	margin: 17px 0;
+}
+
+.input {
+	width: 100%;
+	padding: 5px;
+	box-sizing: border-box;
+	border: none;
+	border-bottom: 1px solid;
+	outline: none;
+	font-size: 15px;
+	font-family: "Raleway", sans-serif;
+	background: transparent;
+	transition: border-color 0.2s ease-in-out;
+}
+
+.input:focus {
+	border-color: #2980B9;
+}
+
+/* ################################################################################# */
+/* Table */
+/* ################################################################################# */
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: center;
+	border: 1px solid;
+}
+
+.table > thead {
+	color: #fff;
+	background: #2980B9;
+}
+
+.table tr:hover > td {
+	background: rgba(255, 255, 255, 0.2);
+	cursor: pointer;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+	padding: 8px;
+	border-bottom: 1px solid;
+}
+
+/* ################################################################################# */
+/* Alert */
+/* ################################################################################# */
+
+.alert {
+	position: fixed;
+	max-width: 300px;
+	right: -100%;
+	bottom: 50px;
+	padding: 20px;
+	color: #fff;
+	box-shadow: 0px 1px 6px #555;
+	cursor: pointer;
+}
+
+.alert-info {
+	background: #2196F3;
+}
+
+.alert-warning {
+	background: #FFB74D;
+}
+
+.alert-error {
+	background: #EF5350;
+}
+
+.alert-success {
+	background: #8BC34A;
+}
+
+/* ################################################################################# */
+/* Responsive */
+/* ################################################################################# */
+
+@media screen and (max-width: 800px) {
+	#content {
+		margin: 0;
+	}
+
+	#nav {
+		left: -100%;
+		box-shadow: 1px 0px 10px 1px rgba(0, 0, 0, 0.6);
+		z-index: 2;
+	}
+
+	#nav::before {
+		position: absolute;
+		width: calc(100vw - 240px);
+		height: 100%;
+		left: 240px;
+		background: rgba(0, 0, 0, 0.6);
+		backdrop-filter: blur(4px);
+		content: '';
+	}
+
+	#content > #navbar {
+		position: fixed;
+		box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.6);
+		z-index: 1;
+	}
+
+	#content > #navbar > i {
+		display: inline-block;
+	}
+}

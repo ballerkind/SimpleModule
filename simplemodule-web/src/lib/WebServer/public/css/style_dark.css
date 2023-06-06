@@ -1,0 +1,89 @@
+/* ################################################################################# */
+/* NAVIGATION */
+/* ################################################################################# */
+
+#nav {
+	/*background: linear-gradient(#212121, #1E1E1E);*/
+	background: linear-gradient(#303030, #2D2D2D);
+}
+
+/* UNTERMENU */
+
+#nav > ul > li > ul {
+	/*background: linear-gradient(#3C3C3C, #393939);*/
+	background: linear-gradient(#4B4B4B, #484848);
+}
+
+/* ################################################################################# */
+/* CONTENT */
+/* ################################################################################# */
+
+#content {
+	/*background: linear-gradient(#303030, #2D2D2D);*/
+	background: linear-gradient(#212121, #1E1E1E);
+}
+
+#content::before {
+	/*background: linear-gradient(rgba(33, 33, 33, 0.5), rgba(33, 33, 33, 1)), url("/img/background.jpg") center/cover no-repeat;*/
+	background: linear-gradient(rgba(33, 33, 33, 0.5), rgba(33, 33, 33, 0.97)), url("/img/background.jpg") center/cover no-repeat;
+}
+
+#content > .container > .panel {
+	background: linear-gradient(#424242, #3F3F3F);
+	color: #fff;
+}
+
+/* ################################################################################# */
+/* CONTENT MODULE */
+/* ################################################################################# */
+
+#content > .container > .module {
+	background: #424242;
+	color: #fff;
+}
+
+#content > .title {
+	color: #fff;
+}
+
+#content > .container > .module > .header::after {
+	background: linear-gradient(rgba(33, 33, 33, 0.5), rgba(33, 33, 33, 1));
+}
+
+#content > .container > .module > .header > i {
+	color: #212121;
+}
+
+#content > .container > .module > .hidden {
+	background: #424242;
+}
+
+/* ################################################################################# */
+/* Input */
+/* ################################################################################# */
+
+.input {
+	color: #fff;
+}
+
+/* ################################################################################# */
+/* Table */
+/* ################################################################################# */
+
+.table,
+.table > thead > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    border-color: #000;
+}
+
+/* ################################################################################# */
+/* Responsive */
+/* ################################################################################# */
+
+@media screen and (max-width: 800px) {
+	#content > #navbar {
+		/*background: linear-gradient(#212121, #1E1E1E);*/
+		background: linear-gradient(#303030, #2D2D2D);
+	}
+}

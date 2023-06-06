@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <title> Einstellungen - SimpleModule </title>
+
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/style_<%- appearance %>.css">
+        <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+        <link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    </head>
+
+
+    <body>
+
+        <%- include("parts/default.ejs") %>
+
+            <p id="title"> Support </p>
+
+            <div class="container">
+
+                <div class="panel flex-1">
+                    <div class="header">
+                        Deine Tickets:
+                    </div>
+
+                    <div class="content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Status</th>
+                                    <th>Thema</th>
+                                    <th>Erstellt</th>
+                                    <th>Letzte Aktivität</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>#1031</td>
+                                    <td><i class="fas fa-lock-open"></i></td>
+                                    <td>Bug Report</td>
+                                    <td>20.09.2019</td>
+                                    <td>Vor 5h</td>
+                                </tr>
+                                <tr>
+                                    <td>#1029</td>
+                                    <td><i class="fas fa-lock"></i></td>
+                                    <td>Account</td>
+                                    <td>16.07.2019</td>
+                                    <td>Vor 63 Tagen</td>
+                                </tr>
+                            </tbody>
+
+<!--                            <tfoot>-->
+<!--                                <tr>-->
+<!--                                    <td><input class="input" placeholder="Url"></td>-->
+<!--                                    <td><input class="input" placeholder="Ziel"></td>-->
+<!--                                    <td></td>-->
+<!--                                    <td></td>-->
+<!--                                    <td><i class="far fa-trash-alt"></i> <i class="far fa-edit"></i></td>-->
+<!--                                </tr>-->
+<!--                            </tfoot>-->
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        <%- include("parts/end.ejs") %>
+
+        <script src="/js/scripts/jquery-3.2.1.min.js"></script>
+        <script src="/js/scripts/socket.io.min.js"></script>
+        <script src="/js/script.js"></script>
+
+        <script>
+
+        </script>
+
+    </body>
+
+</html>

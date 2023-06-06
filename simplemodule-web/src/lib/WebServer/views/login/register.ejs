@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title> Registrierung - SimpleModule </title>
+
+		<link rel="stylesheet" href="/css/login.css">
+		<link rel="stylesheet" href="/css/login_<%- appearance %>.css">
+		<link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+		<link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+	</head>
+
+
+	<body>
+
+		<div id="alert"></div>
+
+		<div id="background">
+			<div id="container">
+				<p> <img id="logo" src="/img/logo.png"> SimpleModule </p>
+
+				<div style="display: flex; flex-wrap: wrap;">
+					<div class="content" style="flex: 1; margin: 2px;">
+						<p> Willkommen </p>
+
+						<div> Wir freuen uns, dass du dich bei uns registieren möchtest. </div>
+						<br>
+						<div> Wir freuen uns, dass du dich bei uns registieren möchtest. </div>
+						<br>
+						<div> Wir freuen uns, dass du dich bei uns registieren möchtest. </div>
+						<br>
+						<div> Wir freuen uns, dass du dich bei uns registieren möchtest. </div>
+					</div>
+					<div class="content" style="flex: 1; margin: 2px;">
+						<p> Registrierung </p>
+
+						<input name="name" placeholder="<%- language.getMessage('login_name'); %>" maxlength="16">
+						<input name="password" type="password" placeholder="<%- language.getMessage('login_password'); %>">
+						<input name="password_repeat" type="password" placeholder="Passwort wiederholen">
+						<input name="email" placeholder="E-Mail-Adresse">
+
+						<button onclick="register();"> Registrieren </button>
+
+						<span> Du hast bereits einen Account? </span>
+						<br>
+						<a href="/Login/"> Jetzt Anmelden! </a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="/js/scripts/jquery-3.2.1.min.js"></script>
+		<script>
+
+			function register() {
+				$.post("/Register/", {
+					name: $("#container .content > input[name=name]").val(),
+					password: $("#container .content > input[name=password]").val(),
+					password_repeat: $("#container .content > input[name=password_repeat]").val(),
+					email: $("#container .content > input[name=email]").val()
+				}, status => {
+					let msg;
+
+					if(status === "empty") {
+						msg = "Alle Felder müssen aufgefüllt sein!";
+						$("#container .content > input").filter(function() {
+							return !this.value;
+						}).addClass("wrong");
+					}
+
+					if(status === "name_invalid") {
+						msg = "Der Name enhält ungültige Zeichen!";
+						$("#container .content > input[name=name]").addClass("wrong");
+					}
+
+					if(status === "password_length") {
+						msg = "Das Passwort muss mindestens 8 Zeichen lang sein!";
+						$("#container .content > input[name=password]").addClass("wrong");
+					}
+
+					if(status === "password_invalid") {
+						msg = "Das Passwort enhält ungültige Zeichen!";
+						$("#container .content > input[name=password]").addClass("wrong");
+					}
+
+					if(status === "password_equal") {
+						msg = "Die Passwörter stimmen nicht überein!";
+						$("#container .content > input[name*=password]").addClass("wrong");
+					}
+
+					if(status === "email_invalid") {
+						msg = "Die E-Mail-Adresse ist ungültig!";
+						$("#container .content > input[name=email]").addClass("wrong");
+					}
+
+					if(status === "name_exists") {
+						msg = "Der Benutzername existiert bereits!";
+						$("#container .content > input[name=name]").addClass("wrong");
+					}
+
+					if(status === "email_exists") {
+						msg = "Die E-Mail wird bereits verwendet!";
+						$("#container .content > input[name=email]").addClass("wrong");
+					}
+
+					if(status === "success") {
+						$("#alert").css("top", "-100%");
+						$("#container > div")
+								.removeAttr("style")
+								.addClass("content")
+								.html("<p> Du hast dich erfolgreich registriert. Bestätige jetzt nur noch die E-Mail, die wir die geschickt haben, und lege direkt los. </p> <a href=\"/Login/\"> Zur Anmeldung </a>");
+					} else {
+						$("#alert").text(msg).css("top", "0");
+					}
+				});
+			}
+
+			$("#container .content > input").on("input", function() {
+				$("#container .content > input").removeClass("wrong");
+				$("#alert").css("top", "-100px");
+			});
+
+		</script>
+
+	</body>
+
+</html>

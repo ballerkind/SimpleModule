@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title> <%- module.name %> - SimpleModule </title>
+
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/style_<%- appearance %>.css">
+		<link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+		<link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+		<style>
+			#plugins > .content > .plugin,
+			#players > .content > .player {
+				margin-bottom: 7px;
+			}
+
+			#plugins > .content > .plugin > i {
+				cursor: pointer;
+			}
+
+			#players > .content > .player > img {
+				vertical-align: middle;
+			}
+		</style>
+
+	</head>
+
+
+	<body>
+
+		<%- include("../../parts/default.ejs") %>
+
+			<p id="title"> Minecraft - <%- module.name + (module.userId != user.id ? " (von " + userManager.getUser(module.userId).name + ")" : "") %> </p>
+
+			<div class="container">
+
+				<div class="panel flex-1" id="info">
+					<div class="header">
+						Informationen:
+					</div>
+
+					<div class="content">
+						<p><b> Status: </b> <%- module.enabled ? "Online" : "Offline" %> </p>
+						<p><b> Version: </b> <%- module.enabled ? module.version : " - " %> </p>
+						<p><b> Addresse: </b> <%- module.enabled ? module.ip : " - " %> </p>
+						<p><b> Port: </b> <%- module.enabled ? module.port : " - " %> </p>
+					</div>
+				</div>
+
+				<div class="panel flex-2 red">
+					<div class="header">
+						Statistik: <button onclick="changeChart(1)" class="btn">6 Hours</button> <button onclick="changeChart(2)" class="btn" disabled>Day</button> <button onclick="changeChart(3)" class="btn" disabled>Week</button> <i onclick="socket.emit('minecraft_statistic_erase');" style="float: right" class="far fa-eraser"></i>
+					</div>
+
+					<div class="content">
+						<canvas id="chart_stats"></canvas>
+					</div>
+				</div>
+
+				<div class="panel flex-1 green" id="plugins">
+					<div class="header">
+						Plugins:
+					</div>
+
+					<div class="content" style="max-height: 376px; overflow-y: auto">
+						<% module.plugins.forEach(plugin => { %>
+							<div class="plugin">
+								<i class="fas fa-power-off" style="color: #<%- plugin.enabled ? '27AE60' : 'C0392B' %>;" onclick="socket.emit('minecraft_plugin', '<%- plugin.name %>');"></i> <span><%- plugin.name %></span>
+							</div>
+						<% }); %>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="container">
+
+				<div class="panel flex-3" style="background: #424242;" id="console">
+					<div class="header" style="color: #fff">
+						Console
+					</div>
+
+					<div class="content" style="color: #fff;">
+						<div style="height: 450px; overflow-y: auto;">
+							<% module.console.forEach(line => { %>
+								<%- line %><br>
+							<% }); %>
+						</div>
+
+						<div style="margin-top: 15px;">
+							<div style="border: 1px solid white; border-radius: 3px; display: inline-flex; width: 100%;">
+								<input type="text" name="command" placeholder="Befehl" style="padding: 7px 10px; background: transparent; outline: none; border: none; border-right: 1px solid #fff; font-size: 15px; flex: 10; color: #fff;" onKeydown="if(event.keyCode == 13) { $(this).next().click(); } if(event.keyCode == 9) { if(event.target.value.length == event.target.selectionStart && event.target.value.length == event.target.selectionEnd) { if(currenttabcomplete != event.target.value) tabcomplete = event.target.value; socket.emit('minecraft_tabcomplete', tabcomplete); } event.preventDefault(); }">
+								<input type="button" name="submit" value="Senden" style="background: transparent; border: none; font-size: 15px; flex: 1; color: #fff; cursor: pointer;" onclick="let input = $(this).prev(); if(input.val() != '') { socket.emit('minecraft_console', input.val()); input.val(''); }">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="panel flex-1 orange" id="players">
+					<div class="header">
+						Online Spieler: <span id="currentPlayers"><%- module.players.length %></span> / <span id="maxPlayers"><%- module.maxPlayers %></span>
+					</div>
+
+					<div class="content" style="max-height: 498px; overflow-y: auto;">
+						<% module.players.forEach(player => { %>
+							<div class="player">
+								<img src="http://cravatar.eu/helmavatar/<%- player %>/32.png"> <span><%- player %></span>
+							</div>
+						<% }); %>
+					</div>
+				</div>
+
+			</div>
+
+		<%- include("../../parts/end.ejs") %>
+
+		<script src="/js/scripts/jquery-3.2.1.min.js"></script>
+		<script src="/js/scripts/socket.io.min.js"></script>
+		<script src="/js/scripts/Chart.min.js"></script>
+		<script src="/js/script.js"></script>
+
+		<script>
+			const socket = io();
+
+			socket.on("module_start", () => {
+				notify("Server wurde gestartet.", "success");
+			});
+
+			socket.on("minecraft_info", info => {
+				$("#info > .content").html(
+					"<p><b> Status: </b> Online %> </p>" +
+					"<p><b> Version: </b> " + info.version + " </p>" +
+					"<p><b> Addresse: </b> " + info.ip + " </p>" +
+					"<p><b> Port: </b> " + info.port + " </p>"
+				);
+
+				$("#players > .header > #maxPlayers").html(info.maxPlayers);
+			});
+
+			let stats = <%- JSON.stringify(module.statistic) %>;
+			let ctx = document.getElementById('chart_stats').getContext('2d');
+			let bgFill = ctx.createLinearGradient(0, 0, 0, 200);
+			bgFill.addColorStop(0, "rgba(33, 150, 243, 0.8)");
+			bgFill.addColorStop(1, "rgba(33, 150, 243, 0)");
+			let chart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: [],
+					datasets: [
+						{
+							label: 'Players',
+							backgroundColor: bgFill,
+							borderWidth: 2,
+							borderColor: 'rgb(33, 150, 243)',
+							pointRadius: 2,
+							pointBackgroundColor: '#fff',
+							data: []
+						}
+					]
+				},
+				options: {
+					tooltips: {
+						intersect: false,
+						mode: 'index'
+					}
+				}
+			});
+			function changeChart(mode) {
+				let labels = [];
+				let data = [];
+
+				switch(mode) {
+					case 1: {
+						data = stats.data.slice(Math.max(stats.data.length - (12 * 6 + 1), 0));
+
+						let time = stats.start + 300_000 * (stats.data.length - data.length);
+						labels = data.map(x => {
+							let date = new Date(time);
+							time += 300_000;
+
+							let hour = date.getHours();
+							hour = (hour < 10 ? "0" : "") + hour;
+
+							let min = date.getMinutes();
+							min = (min < 10 ? "0" : "") + min;
+
+							return hour + ":" + min;
+						});
+						break;
+					}
+					case 2: {
+						let data_ = stats.data.slice(Math.max(stats.data.length - (12 * 24 + 1), 0));
+						let time = stats.start + 300_000 * (stats.data.length - data.length - 1);
+
+						while(new Date(time).getMinutes() < 30) {
+							data_.shift();
+							time += 300_000;
+						}
+
+						let t = new Date(time);
+						let hour = t.getMinutes() !== 0 ? t.getHours() + 1 : t.getHours();
+						let i = 0;
+						let d = 0;
+						while(new Date(time).getMinutes() < 30) {
+							d += data_.shift();
+							i++;
+						}
+						data.push(d);
+
+						break;
+					}
+					case 3: {
+
+
+						break;
+					}
+				}
+
+				chart.data.labels = labels;
+				chart.data.datasets[0].data = data;
+
+				chart.update();
+			}
+			changeChart(1); // default
+
+			socket.on("minecraft_plugin", plugin => {
+				let span = $("#plugins > .content > .plugin > span").filter((index, span) => span.innerText === plugin.name);
+				if(span.length > 0) {
+					let icon = span.prev("i");
+
+					icon.css("color", plugin.enabled ? "#27AE60" : "#C0392B");
+					icon.attr("onclick", "socket.emit('minecraft_plugin', '" + plugin.name + "');");
+				} else {
+					$("#plugins > .content > .plugin").add(
+						'<div class="plugin">' +
+							'<i class="fas fa-power-off" style="color: #' + (plugin.enabled ? '27AE60' : 'C0392B') + ';" onclick="socket.emit(\'minecraft_plugin\', \'' + plugin.name + '\');"></i> <span>' + plugin.name + '</span>' +
+						'</div>'
+					).sort((first, second) => {
+						return first.innerText.toLowerCase().localeCompare(second.innerText.toLowerCase());
+					}).appendTo("#plugins > .content");
+				}
+			});
+
+			socket.on("minecraft_console", command => {
+				let div = $("#console > .content > div").eq(0);
+				let scroll = div.scrollTop() + div.innerHeight() >= div.get(0).scrollHeight;
+
+				div.append(command + "<br>");
+				if(scroll) div.scrollTop(div.get(0).scrollHeight);
+			});
+
+			$(document).ready(function(){
+				let div = $("#console > .content > div").get(0);
+				div.scrollTop = div.scrollHeight;
+			});
+
+			let tabcomplete, currenttabcomplete;
+			socket.on("minecraft_tabcomplete", response => {
+				let input = $("#content input[type='text']");
+				let split = input.val().split(" ");
+
+				let index = response.indexOf(split[split.length - 1]) + 1;
+				split[split.length - 1] = index !== response.length ? response[index] : tabcomplete.split(" ").pop();
+				input.val(currenttabcomplete = split.join(" "));
+			});
+
+			socket.on("minecraft_player", player => {
+				if(player.joined) {
+					$("#players > .content > .player").add(
+						'<div class="player">' +
+							'<img src="http://cravatar.eu/helmavatar/' + player.name + '/32.png"> <span>' + player.name + '</span>' +
+						'</div>'
+					).sort((first, second) => {
+						return first.innerText.toLowerCase().localeCompare(second.innerText.toLowerCase());
+					}).appendTo("#players > .content");
+				} else {
+					$("#players > .content > .player > span").filter((index, span) => span.innerText === player.name).parent().remove();
+				}
+
+				$("#players > .header > #currentPlayers").html($("#players > .content > .player").length);
+			});
+
+			socket.on("module_stop", () => {
+				$("#info > .content").html(
+					"<p><b> Status: </b> Offline %> </p>" +
+					"<p><b> Version: </b> - </p>" +
+					"<p><b> Addresse: </b> - </p>" +
+					"<p><b> Port: </b> - </p>"
+				);
+				$("#plugins > .content").html("");
+				$("#console > .content > div").eq(0).html("");
+				$("#players > .header > #currentPlayers, #maxPlayers").html("0");
+				$("#players > .content").html("");
+
+				notify("Server wurde heruntergefahren!", "error");
+			});
+
+		</script>
+
+	</body>
+
+</html>

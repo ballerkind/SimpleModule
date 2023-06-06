@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title> Einstellungen - SimpleModule </title>
+
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/style_<%- appearance %>.css">
+		<link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+		<link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+	</head>
+
+
+	<body>
+
+		<%- include("parts/default.ejs") %>
+
+			<p id="title"> Einstellungen </p>
+
+			<div class="container">
+
+				<div class="panel flex-1">
+					<div class="header">
+						Passwort ändern:
+					</div>
+
+					<div class="content">
+						<div class="input-group">
+							<b> Altes Passwort: </b>
+							<input name="oldPassword" class="input" type="password">
+						</div>
+
+						<div class="input-group">
+							<b> Neues Passwort: </b>
+							<input name="newPassword" class="input" type="password">
+						</div>
+
+						<div class="input-group">
+							<b> Neues Passwort wiederholen: </b>
+							<input name="newPassword_repeat" class="input" type="password">
+						</div>
+
+						<div class="input-group">
+							<button class="btn alert-success" style="width: 100%;" onclick="changePassword();">Passwort ändern</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="panel flex-1 green">
+					<div class="header">
+						E-Mail ändern:
+					</div>
+
+					<div class="content">
+						<div class="input-group">
+							<b> Neue E-Mail-Adresse: </b>
+							<input name="email" class="input">
+						</div>
+
+						<div class="input-group">
+							<button class="btn alert-success" style="width: 100%;" onclick="changeEmail();">E-Mail-Adresse ändern</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="panel flex-1 red">
+					<div class="header">
+						Konto löschen:
+					</div>
+
+					<div class="content">
+						<div class="input-group">
+							<b> Passwort: </b>
+							<input name="password" class="input" type="password">
+						</div>
+
+						<div class="input-group">
+							<button class="btn alert-success" style="width: 100%;" onclick="deleteAccount();">Konto löschen</button>
+						</div>
+					</div>
+					</div>
+				</div>
+
+			</div>
+
+		<%- include("parts/end.ejs") %>
+
+		<script src="/js/scripts/jquery-3.2.1.min.js"></script>
+		<script src="/js/scripts/socket.io.min.js"></script>
+		<script src="/js/script.js"></script>
+
+		<script>
+
+			const socket = io();
+
+			function changePassword() {
+				let content = $(event.target).closest(".content");
+
+				socket.emit("settings_changePassword", {
+					oldPassword: content.find("input[name=oldPassword]").val(),
+					newPassword: content.find("input[name=newPassword]").val(),
+					newPassword_repeat: content.find("input[name=newPassword_repeat]").val()
+				}, status => {
+					if(status === "empty") {
+						notify("Alle Felder müssen aufgefüllt sein!", "error");
+					} else if(status === "password_length") {
+						notify("Das Passwort muss mindestens 8 Zeichen lang sein!", "error");
+					} else if(status === "password_invalid") {
+						notify("Das Passwort enhält ungültige Zeichen!", "error");
+					} else if(status === "password_equal") {
+						notify("Die Passwörter stimmen nicht überein!", "error");
+					} else if(status === "oldPassword_wrong") {
+						notify("Dein altes Passwort ist falsch!", "error");
+					} else {
+						content.find("input").val("");
+						notify("Dein Passwort wurde erfolgreich geändert!", "success");
+					}
+				});
+			}
+
+			function changeEmail() {
+				let content = $(event.target).closest(".content");
+
+				socket.emit("settings_changeEmail", content.find("input[name=email]").val(), status => {
+					if(status === "email_invalid") {
+						notify("Die E-Mail-Adresse ist ungültig!", "error");
+					} else {
+						notify("Die E-Mail-Adresse wurde erfolgreich geändert", "success");
+					}
+				});
+			}
+
+			function deleteAccount() {
+				let content = $(event.target).closest(".content");
+
+				socket.emit("settings_deleteAccount", content.find("input[name=password]").val(), status => {
+					if(status === "password_wrong") {
+						notify("Das Passwort ist ungültig!", "error");
+					} else {
+						location.href = "/Login/";
+					}
+				});
+			}
+
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title> <%- module.name %> - SimpleModule </title>
+
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/style_<%- appearance %>.css">
+		<link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+		<link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+	</head>
+
+
+	<body>
+
+		<%- include("../../parts/default.ejs") %>
+
+			<p id="title"> UrlShortener - <%- module.name + (module.userId != user.id ? " (von " + userManager.getUser(module.userId).name + ")" : "") %> </p>
+
+			<div class="container">
+
+				<div class="panel flex-1">
+					<div class="header">
+						Alle Urls: <%- Object.keys(module.urls).length %>
+					</div>
+
+					<div class="content">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>URL</th>
+									<th>Ziel</th>
+									<th>Klicks heute</th>
+									<th>Klicks gesamt</th>
+									<th>Optionen</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<% for(let url in module.urls) { %>
+									<tr>
+										<td><%- url %></td>
+										<td><a href="<%- module.urls[url] %>"><%- module.urls[url] %></a></td>
+										<td><%- 0 %></td>
+										<td><%- 91 %></td>
+										<td><i class="far fa-trash-alt"></i> <i class="far fa-edit"></i></td>
+									</tr>
+								<% } %>
+							</tbody>
+
+							<tfoot>
+								<tr>
+									<td><input class="input" placeholder="Url"></td>
+									<td><input class="input" placeholder="Ziel"></td>
+									<td></td>
+									<td></td>
+									<td><i class="far fa-trash-alt"></i> <i class="far fa-edit"></i></td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+
+			</div>
+
+		<%- include("../../parts/end.ejs") %>
+
+		<script src="/js/scripts/jquery-3.2.1.min.js"></script>
+		<script src="/js/scripts/socket.io.min.js"></script>
+		<script src="/js/scripts/Chart.min.js"></script>
+		<script src="/js/script.js"></script>
+
+		<script>
+
+			const socket = io();
+
+		</script>
+
+	</body>
+
+</html>

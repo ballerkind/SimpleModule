@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title> API Documentation - SimpleModule </title>
+
+		<link rel="stylesheet" href="/css/api.css">
+		<link rel="stylesheet" href="/css/api_<%- appearance %>.css">
+		<link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+		<link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+	</head>
+
+
+	<body>
+
+		<nav id="nav">
+			<p id="logo"> API Docs </p>
+
+			<ul>
+				<li><a href="/api/"<%- typeof selectedModule == "undefined" ? ' class="active"' : "" %>> <i class="fas fa-flask"></i> Introduction </a></li>
+
+				<span> Modules </span>
+				<%
+					for(let type in api) {
+						let moduleType = moduleManager.moduleTypes[type];
+						%> <li><a href="/api/<%- moduleType.name %>"<%- typeof selectedModule != "undefined" && type == selectedModule ? ' class="active"' : "" %>> <i class="<%- moduleType.icon %>"></i> <%- moduleType.name %> </a></li> <%
+					}
+				%>
+
+				<li><a href="/"> <i class="far fa-home"></i> Back </a></li>
+			</ul>
+
+			<p id="footer"> SimpleModule &copy; by ballerkind 2018 </p>
+		</nav>
+
+		<div id="content">
+
+			<%
+
+				if(typeof selectedModule != "undefined") {
+
+					%> <p class="title"><%- selectedModule %></p> <%
+
+					for(let method in api[selectedModule]) {
+						let json = api[selectedModule][method];
+						if(json.description != null) {
+							%>
+								<div class="container" style="border-color: <%- json.callback.length == 3 ? '#FF9800' : '#4CAF50' %>">
+									<span class="request" style="background: <%- json.callback.length == 3 ? '#FF9800' : '#4CAF50' %>"><%- json.callback.length == 3 ? "POST" : "GET" %></span>
+									<span class="method"><b><%- method.toUpperCase() %></b></span>
+									<span class="url"><%= "/api/" + selectedModule + "/<moduleId>/<secret>/" + method %></span>
+
+									<div class="description">
+										<p><%- json.description.info %></p>
+										<% if(json.callback.length == 3) { %>
+										<span class="title">Parameters:</span>
+										<pre class="json"><% json.description.parameters.forEach(s => {%><%- s + "\n" %><% }); %></pre>
+										<% } %>
+										<span class="title">Result:</span>
+										<pre class="json"><%- JSON.stringify(json.description.result, null, 2) %></pre>
+									</div>
+								</div>
+							<%
+						}
+					}
+
+				} else {
+					%>
+						<p class="title">Introduction</p>
+
+						<div class="container" style="border-color: #2196F3">
+							<span class="request" style="background: #2196F3">Info</span>
+							<span class="method"><b>General</b></span>
+
+							<div class="description">
+								<span> Hallo Freunde </span>
+							</div>
+						</div>
+
+						<p class="title">Code examples</p>
+
+						<div class="container" style="border-color: #4CAF50">
+							<span class="request" style="background: #4CAF50">GET</span>
+							<span class="method"><b>Java</b></span>
+
+							<div class="description">
+								<pre class="json">public static void main(String args[]) {<br><br>}</pre>
+							</div>
+						</div>
+						<div class="container" style="border-color: #FF9800">
+							<span class="request" style="background: #FF9800">POST</span>
+							<span class="method"><b>Java</b></span>
+
+							<div class="description">
+								<pre class="json">public static void main(String args[]) {<br>	Hi<br>}</pre>
+							</div>
+						</div>
+					<%
+				}
+
+			%>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title> Welcome - SimpleModule </title>
+
+		<link rel="stylesheet" href="/css/welcome.css">
+		<link rel="stylesheet" href="/css/welcome_<%- appearance %>.css">
+		<link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+		<link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+	</head>
+
+
+	<body>
+
+		<nav id="nav">
+			<p> SimpleModule </p>
+			<i class="far fa-stream"></i>
+			<ul>
+				<li><a target="home"> Home </a></li>
+				<li><a target="about"> Über uns </a></li>
+				<li><a target="products"> Produkte </a></li>
+				<li><a target="api"> API </a></li>
+				<li><a target="pictures"> Bilder </a></li>
+				<li class="line"></li>
+				<li>
+					<select>
+						<%
+							for(let code in language.getLanguages()) {
+								%> <option value="<%- code %>"<%- code == language.getCurrentLanguage() ? " selected" : "" %>> <%- language.getLanguages()[code] %> </option> <%
+							}
+						%>
+					</select>
+				</li>
+				<li class="line"></li>
+				<li><i class="fa<%- appearance === "dark" ? "r" : "s" %> fa-lightbulb" onclick="toggleDarkMode();"></i></li>
+				<li class="line"></li>
+				<li><a href="/Login/"> <%- language.getMessage("login_login"); %> </a></li>
+			</ul>
+		</nav>
+
+		<section id="home">
+
+			<p style="font-size: 40px; font-weight: bold;"> SimpleModule </p>
+			<span style="font-size: 30px;"> <%- language.getMessage("welcome_title"); %> </span>
+
+		</section>
+
+		<section id="about">
+
+			<h1> Über uns </h1>
+			<div class="line"></div>
+
+			<div class="flex">
+				<div>
+					<img src="https://image.flaticon.com/icons/svg/747/747954.svg" style="height: 40px">
+					<h1> Einfach </h1>
+					<p>
+						In nur wenigen Schritten erweiterst du dein WebInterface mit vielen verschiedenen Funktionen.
+					</p>
+				</div>
+
+				<div>
+					<img src="https://image.flaticon.com/icons/svg/747/747938.svg" style="height: 40px">
+					<h1> Vielfältig </h1>
+					<p>
+						Du möchstest einen Dienst zu deinem Interface hinzufügen? Kein Problem! Wir bieten dir eine große Auswahl an Diensten (Minecraft, TeamSpeak, UrlShortener, CloudSystem, BungeeCord, etc.)
+					</p>
+				</div>
+				
+				<div>
+					<img src="https://image.flaticon.com/icons/svg/747/747931.svg" style="height: 40px">
+					<h1> Support </h1>
+					<p>
+						Wir bieten dir einen schnellen & zuverlässigen Support, der dir jeder Zeit zur Verfügung steht!
+					</p>
+				</div>
+			</div>
+
+		</section>
+
+		<section>
+
+			<div class="flex">
+				<div>
+					<h1> Melde dich an </h1>
+					<p> Erstelle dir in wenigen Minuten deinen eigenes Interface. </p>
+				</div>
+
+				<div>
+					<a href="/Register/"> Zur Registrierung </a>
+				</div>
+			</div>
+
+		</section>
+
+		<section id="products">
+
+			<h1> Produkte </h1>
+			<div class="line"></div>
+
+			<div class="flex">
+				<div>
+					<img src="https://image.flaticon.com/icons/svg/747/747956.svg" style="height: 40px">
+					<h1> CloudSystem </h1>
+					<p>
+						Mithilfe des CloudSystems hast du die Möglichkeit, mehrere Minecraft Server dynamisch zu starten und im Interface schnell und einfach zu verwalten.
+					</p>
+				</div>
+
+				<div>
+					<img src="https://image.flaticon.com/icons/svg/747/747822.svg" style="height: 40px">
+					<h1> Root- / vServer </h1>
+					<p>
+						Verwalte deinen Root- / vServer mit nur wenigen Mausklicks und verschaffe dir einen Überblick.
+					</p>
+				</div>
+
+				<div>
+					<img src="https://image.flaticon.com/icons/svg/747/747845.svg" style="height: 40px">
+					<h1> TeamSpeak </h1>
+					<p>
+						Du besitzt einen TeamSpeak und dir fehlt noch ein Bot, der dir einige Aufgaben abnehmen soll und neue Funktionen mit sich bringt? Kein Problem! Auch das bieten wir dir an.
+					</p>
+
+				</div>
+
+				<div>
+					<img src="https://image.flaticon.com/icons/svg/747/747944.svg" style="height: 40px">
+					<h1> Und mehr </h1>
+					<p>
+						All das und noch viel mehr bieten wir dir hier auf SimpleModule an. Melde dich einfach an und mache dir ein eigenes Bild.
+					</p>
+				</div>
+			</div>
+
+		</section>
+
+		<section id="api">
+
+			<div class="flex">
+				<div>
+					<h1> Wir bieten dir auch eine API </h1>
+					<p> Greife mithilfe der API auf Funktionen deiner Module zu. </p>
+				</div>
+
+				<div>
+					<a href="/api/"> Zur Dokumentation </a>
+				</div>
+			</div>
+
+		</section>
+
+		<section id="pictures">
+
+			<h1> Bilder </h1>
+			<div class="line"></div>
+
+			<div class="flex">
+				<div>
+					<img src="/img/background.jpg" style="width: 100%;">
+				</div>
+				<div>
+					<img src="/img/background.jpg" style="width: 100%;">
+				</div>
+			</div>
+
+			<div class="flex">
+				<div>
+					<img src="/img/background.jpg" style="width: 100%;">
+				</div>
+				<div>
+					<img src="/img/background.jpg" style="width: 100%;">
+				</div>
+			</div>
+
+		</section>
+
+		<section id="footer">
+			SimpleModule &copy; by ballerkind 2018
+		</section>
+
+		<script src="/js/scripts/jquery-3.2.1.min.js"></script>
+		<script src="/js/welcome.js"></script>
+
+	</body>
+
+</html>

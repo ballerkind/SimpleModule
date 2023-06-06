@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title> Dashboard - SimpleModule </title>
+
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/style_<%- appearance %>.css">
+		<link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+		<link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+	</head>
+
+
+	<body>
+
+		<%- include("parts/default.ejs") %>
+
+			<p id="title"> Dashboard </p>
+
+			<div class="container">
+				<%
+					for(let type in moduleManager.moduleTypes) {
+						let moduleType = moduleManager.moduleTypes[type];
+						%>
+						<div class="panel green" style="width: 350px;">
+							<div class="content" style="display: flex; align-items: center; /*flex-wrap: wrap;*/">
+								<i class="<%- moduleType.icon %> fa-4x"></i>
+								<div style="flex: 1; text-align: center;">
+									<span style="font-size: 25px;"><%- moduleType.name %></span><br>
+									<span> 2 Eigene | 4 Geteilt </span>
+								</div>
+							</div>
+						</div>
+						<%
+					}
+				%>
+			</div>
+
+			<p class="title"> UndSonstSo? </p>
+
+			<div class="container">
+				<div class="panel flex-1">
+					<div class="header">
+						Hallo Meine Freunde
+					</div>
+
+					<div class="content">
+						<b>Klicks?</b> Laufen
+					</div>
+				</div>
+
+				<div class="panel flex-1">
+					<div class="header">
+						Hallo Meine Freunde
+					</div>
+
+					<div class="content">
+						<b>Klicks?</b> Laufen
+					</div>
+				</div>
+
+				<div class="panel flex-1">
+					<div class="header">
+						Hallo Meine Freunde
+					</div>
+
+					<div class="content">
+						<b>Klicks?</b> Laufen
+					</div>
+				</div>
+			</div>
+
+		<%- include("parts/end.ejs") %>
+
+		<script src="/js/scripts/jquery-3.2.1.min.js"></script>
+		<script src="/js/script.js"></script>
+
+	</body>
+
+</html>

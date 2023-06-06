@@ -1,0 +1,4 @@
+name: SimpleBungee
+version: 1.0
+author: ballerkind
+main: de.ballerkind.simplemodule.bungee.Main

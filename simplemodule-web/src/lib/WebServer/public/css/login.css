@@ -1,0 +1,129 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+
+/* ################################################################################# */
+/* STANDARD HTML TAGS */
+/* ################################################################################# */
+
+html, body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: "Raleway", sans-serif;
+}
+
+#background {
+	min-height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* ################################################################################# */
+/* LOGIN */
+/* ################################################################################# */
+
+#container {
+	text-align: center;
+	color: #fff;
+	margin: 16px;
+}
+
+#container > p {
+	font-size: 30px;
+	margin: 0 0 16px 0;
+}
+
+#container > p > #logo {
+	position: relative;
+	top: 1px;
+	width: 25px;
+	margin-right: 3px;
+}
+
+#container .content {
+	min-width: 300px;
+	padding: 25px;
+	background: rgba(0, 0, 0, 0.6);
+}
+
+#container .content > p {
+	font-size: 22px;
+}
+
+#container .content > input {
+	display: block;
+	width: 100%;
+	margin-bottom: 22px;
+	padding: 15px 5px;
+	box-sizing: border-box;
+	border: none;
+	border-bottom: 1px solid;
+	outline: none;
+	font-size: 18px;
+	color: #fff;
+	background: transparent;
+	font-family: "Raleway", sans-serif;
+	transition: border-color 0.2s ease-in-out;
+}
+
+#container .content > input:focus {
+	border-color: #2980B9;
+}
+
+#container .content > input.wrong {
+	border-color: #C0392B;
+}
+
+/* ANTI AUTOFILL */
+@-webkit-keyframes autofill {
+    to {
+        color: #fff;
+        background: transparent;
+    }
+}
+#container .content > input:-webkit-autofill {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+}
+/* ANTI AUTOFILL */
+
+#container .content > button {
+	width: 100%;
+	padding: 15px;
+	margin-bottom: 22px;
+	border: none;
+	border-radius: 2px;
+	color: #fff;
+	font-size: 18px;
+	background: #2C3E50;
+}
+
+#container .content > button:hover {
+	cursor: pointer;
+	background: #2980B9;
+}
+
+#container .content > button:focus {
+	outline: none;
+}
+
+#container .content > a {
+	text-decoration: none;
+	color: #2980B9;
+}
+
+#container .content > a:hover {
+	color: #3498DB;
+}
+
+#alert {
+	position: absolute;
+	width: 100%;
+	top: -100px;
+	padding: 25px 0px;
+	text-align: center;
+	color: #fff;
+	background: #C0392B;
+	transition: 0.3s;
+}

@@ -1,0 +1,70 @@
+/* ################################################################################# */
+/* NAVIGATION */
+/* ################################################################################# */
+
+#nav {
+	background: linear-gradient(#2C3E50, #293B4D);
+}
+
+/* UNTERMENU */
+
+#nav > ul > li > ul {
+	background: linear-gradient(#4A687D, #47657A);
+}
+
+/* ################################################################################# */
+/* CONTENT */
+/* ################################################################################# */
+
+#content {
+	background: linear-gradient(#EEE, #EBEBEB);
+}
+
+#content::before {
+	background: linear-gradient(rgba(44, 62, 80, 0.5), rgba(44, 62, 80, 1)), url("/img/background.jpg") center/cover no-repeat;
+}
+
+#content > .container > .panel {
+	background: linear-gradient(#fff, #FCFCFC);
+}
+
+/* ################################################################################# */
+/* CONTENT MODULE */
+/* ################################################################################# */
+
+#content > .container > .module {
+	background: #fff;
+}
+
+#content > .container > .module > .header::after {
+	background: linear-gradient(rgba(44, 62, 80, 0.5), rgba(44, 62, 80, 1));
+}
+
+#content > .container > .module > .header > i {
+	color: #2C3E50;
+}
+
+#content > .container > .module > .hidden {
+	background: #fff;
+}
+
+/* ################################################################################# */
+/* Table */
+/* ################################################################################# */
+
+.table,
+.table > thead > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    border-color: #DDD;
+}
+
+/* ################################################################################# */
+/* Responsive */
+/* ################################################################################# */
+
+@media screen and (max-width: 800px) {
+	#content > #navbar {
+		background: linear-gradient(#2C3E50, #293B4D);
+	}
+}

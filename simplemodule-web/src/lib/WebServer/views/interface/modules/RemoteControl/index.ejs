@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <title> <%- module.name %> - SimpleModule </title>
+
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/style_<%- appearance %>.css">
+        <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+        <link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    </head>
+
+
+    <body>
+
+        <%- include("../../parts/default.ejs") %>
+
+            <p id="title"> RemoteControl - <%- module.name + (module.userId !== user.id ? " (von " + userManager.getUser(module.userId).name + ")" : "") %> </p>
+
+            <div class="container">
+
+                <div class="panel flex-1">
+                    <div class="header">
+                        Übersicht:
+                    </div>
+
+                    <div class="content">
+                        Noch nada
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="container">
+
+                <div class="panel flex-1">
+                    <div class="header">
+                        Bild
+                    </div>
+
+                    <div class="content">
+                        <img src="https://i3g4v6w8.stackpathcdn.com/wp-content/uploads/2018/08/norway-theme-windows-10__.jpg" style="width: 49%;">
+                        <img src="https://i3g4v6w8.stackpathcdn.com/wp-content/uploads/2018/08/norway-theme-windows-10__.jpg" style="width: 49%;">
+                    </div>
+                </div>
+
+            </div>
+
+        <%- include("../../parts/end.ejs") %>
+
+        <script src="/js/scripts/jquery-3.2.1.min.js"></script>
+        <script src="/js/scripts/socket.io.min.js"></script>
+        <script src="/js/scripts/Chart.min.js"></script>
+        <script src="/js/script.js"></script>
+
+        <script>
+
+            const socket = io();
+
+        </script>
+
+    </body>
+
+</html>

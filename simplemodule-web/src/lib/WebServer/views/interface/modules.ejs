@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title> Modules - SimpleModule </title>
+
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/style_<%- appearance %>.css">
+		<link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+		<link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+		<style>
+
+			#content > .container > .module {
+				position: relative;
+				width: 240px;
+				margin: 15px;
+				box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.25);
+				transition: 0.2s;
+			}
+
+			#content > .container > .module:hover {
+				transform: scale(1.05);
+				box-shadow: 0px 1px 20px 1px rgba(0, 0, 0, 0.4);
+			}
+
+			#content > .container > .module > .header {
+				position: relative;
+				height: 180px;
+			}
+
+			<% for(let type in moduleManager.moduleTypes) {
+				let moduleType = moduleManager.moduleTypes[type];
+				%>
+					#content > .container > .module > .header.<%- moduleType.name %> {
+						background: url("/img/modules/<%- moduleType.name %>.jpg") center/cover no-repeat;
+					}
+				<%
+			} %>
+
+			#content > .container > .module > .header.New {
+				background: url("/img/modules/New.jpg") center/cover no-repeat;
+			}
+
+			#content > .container > .module > .header::after {
+				display: block;
+				height: 100%;
+				content: '';
+			}
+
+			#content > .container > .module > .header > i {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 100px;
+				transform: translate(-50%, -50%);
+				border: 1px solid #fff;
+				border-radius: 50%;
+				text-align: center;
+				line-height: 100px;
+				background: rgba(255, 255, 255, 0.7);
+			}
+
+			#content > .container > .module > .body {
+				padding: 0 15px;
+			}
+
+			#content > .container > .module > .body > .name {
+				text-align: center;
+				font-size: 17px;
+				font-weight: bold;
+			}
+
+			#content > .container > .module > .body > div {
+				margin: 17px 0;
+			}
+
+			#content > .container > .module > .body > div > .float-right {
+				float: right;
+			}
+
+			#content > .container > .module > .hidden {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				box-sizing: border-box;
+				bottom: 0;
+				display: none;
+			}
+
+		</style>
+
+	</head>
+
+
+	<body>
+
+		<%- include("parts/default.ejs") %>
+
+			<p id="title"> Modules </p>
+
+			<div class="container">
+
+				<div class="panel flex-1">
+					<div class="header">
+						Deine Module:
+					</div>
+
+					<div class="content">
+						<p><b>Deine Module:</b> <% let x = 0; for(let type in user.modules) { x += user.modules[type].length } %> <%- x %> Module</p>
+						<p><b>Mit dir geteilt:</b> <% x = 0; for(let type in user.sharedModules) { x += user.sharedModules[type].length } %> <%- x %> Module</p>
+						<p><b>Du teilst:</b> <% x = 0; for(let type in user.modules) { user.modules[type].forEach(moduleId => { x += moduleManager.getModule(type, moduleId).shared.length }); } %> <%- x %> Module</p>
+					</div>
+				</div>
+
+			</div>
+
+			<p class="title"> Deine Module: </p>
+			<div class="container">
+			<%
+				if(Object.keys(user.modules).length > 0 || Object.keys(user.sharedModules).length > 0) {
+					for(let type in moduleManager.moduleTypes) {
+						let moduleType = moduleManager.moduleTypes[type];
+
+						if(user.modules.hasOwnProperty(moduleType.name)) {
+							user.modules[moduleType.name].forEach(moduleId => {
+								let module = moduleManager.getModule(moduleType.name, moduleId);
+
+								%>
+									<div class="module">
+										<div class="header <%- module.type %>">
+											<i class="<%- moduleType.icon %> fa-4x"></i>
+										</div>
+
+										<div class="body">
+											<div class="name"><%- module.type + " - " + module.name %></div>
+											<div><b>ID:</b> <span class="float-right"><%- module.id %></span></div>
+											<div><b>Geteilt mit:</b> <span class="shared float-right"><%- module.shared.length %></span></div>
+											<div style="text-align: center;"><button class="btn" onclick="$('.hidden').slideUp(); let module = $(this).closest('.module'); module.find('.hidden').html(module.find('.original').html()).slideDown();"> Bearbeiten </button> <button class="btn alert-success" onclick="shareModule('<%- module.type %>', '<%- module.id %>');"> Teilen </button></div>
+										</div>
+
+										<div class="hidden body"></div>
+
+										<div class="original" style="display: none">
+											<div class="name"><%- module.type + " - " + module.name %></div>
+											<div><b>Name:</b> <input name="name" class="input" value="<%- module.name %>"></div>
+											<div><b>Secret:</b> <input name="secret" class="input" value="<%- module.secret %>"></div>
+											<div>
+												<b>Geteilt mit:</b>
+												<% if(module.shared.length > 0) { %>
+													<div class="shared-users" style="max-height: 50px; overflow-y: auto;">
+														<% module.shared.forEach(userId => { %>
+															<div>
+																<input type="checkbox" checked> <span><%- userManager.getUser(userId).name %></span>
+															</div>
+														<% }); %>
+													</div>
+												<% } else { %>
+													-
+												<% } %>
+											</div>
+											<div><b>Löschen:</b> <input type="checkbox" name="delete" class="float-right"></div>
+											<div style="text-align: center;"><button class="btn alert-error" onclick="$(this).closest('.hidden').slideUp();"> Abbrechen </button> <button class="btn alert-success" onclick="updateModule('<%- module.type %>', '<%- module.id %>');"> Speichern </button></div>
+										</div>
+									</div>
+								<%
+							});
+						}
+
+						if(user.sharedModules.hasOwnProperty(moduleType.name)) {
+							user.sharedModules[moduleType.name].forEach(moduleId => {
+								let module = moduleManager.getModule(moduleType.name, moduleId);
+
+								%>
+									<div class="module">
+										<div class="header <%- module.type %>">
+											<i class="<%- moduleType.icon %> fa-4x"></i>
+										</div>
+
+										<div class="body">
+											<div class="name"> <%- module.type + " - " + module.name %> </div>
+											<div><b>Besitzer:</b> <span class="float-right"><%- userManager.getUser(module.userId).name %></span></div>
+											<div><b>ID:</b> <span class="float-right"><%- module.id %></span></div>
+											<div><b>Secret:</b> <span class="float-right"><%- module.secret %></span></div>
+											<div style="text-align: center;"><button class="btn alert-error" onclick="$('.hidden').slideUp(); $(this).closest('.module').find('.hidden').slideDown();"> Entfernen </button></div>
+										</div>
+
+										<div class="hidden body">
+											<div class="name"> <%- module.type + " - " + module.name %> </div>
+											<div><b>Besitzer:</b> <span class="float-right"><%- userManager.getUser(module.userId).name %></span></div>
+											<div><b>ID:</b> <span class="float-right"><%- module.id %></span></div>
+											<div style="text-align: center;"><button class="btn alert-error" onclick="$(this).closest('.hidden').slideUp();"> Abbrechen </button> <button class="btn alert-success" onclick="socket.emit('module_remove', {moduleType: '<%- module.type %>', moduleId: '<%- module.id %>'}); location.reload();"> Entfernen </button></div>
+										</div>
+									</div>
+								<%
+							});
+						}
+					}
+				}
+			%>
+				<div class="module">
+					<div class="header New">
+						<i class="fas fa-plus fa-4x"></i>
+					</div>
+
+					<div class="body">
+						<div class="name">Modul hinzufügen</div>
+						<div style="text-align: center;"><button class="btn" onclick="$('.hidden').slideUp(); $(this).closest('.module').find('.hidden').slideDown();"> Code einlösen </button></div>
+					</div>
+
+					<div class="hidden body">
+						<div class="name">Modul hinzufügen</div>
+						<div><b>Code:</b> <input class="input" placeholder="Code einlösen"></div>
+						<div style="text-align: center;"><button class="btn alert-error" onclick="$(this).closest('.hidden').slideUp();"> Abbrechen </button> <button class="btn alert-success" onclick="socket.emit('module_redeem', $(this).closest('.hidden').find('input').val(), status => status == 'code_invalid' ? notify('Der ShareToken ist ungültig!', 'error') : status == 'user_owner' ? notify('Du bist der Besitzer dieses Moduls!', 'error') : status == 'user_shared' ? notify('Du besitzt dieses Modul bereits!', 'error') : location.reload());"> Einlösen </button></div>
+					</div>
+				</div>
+			</div>
+
+			<p class="title"> Verfügbare Module: </p>
+			<div class="container">
+				<%
+					for(let type in moduleManager.moduleTypes) {
+						let moduleType = moduleManager.moduleTypes[type];
+
+						%>
+							<div class="module">
+								<div class="header <%- moduleType.name %>">
+									<i class="<%- moduleType.icon %> fa-4x"></i>
+								</div>
+
+								<div class="body">
+									<div class="name"><%- moduleType.name %></div>
+									<div>Mithilfe des CloudSystems kannst du deine Minecraft Server nach Bedarf und <b>dynamisch</b> starten bzw stoppen lassen.</div>
+									<div><b>Bereits genutzt:</b> <span class="float-right"><%- Object.keys(moduleType.modules).length %>x</span></div>
+									<div style="text-align: center;"><button class="btn alert-success" onclick="$('.hidden').slideUp(); $(this).closest('.module').find('.hidden').slideDown();"> Auswählen </button></div>
+								</div>
+
+								<div class="hidden body">
+									<div class="name"><%- moduleType.name %></div>
+									<div><b>Name:</b> <input class="input"></div>
+									<div style="text-align: center;"><button class="btn alert-error" onclick="$(this).closest('.hidden').slideUp();"> Abbrechen </button> <button class="btn alert-success" onclick="addModule('<%- moduleType.name %>');"> Speichern </button></div>
+								</div>
+							</div>
+						<%
+					}
+				%>
+			</div>
+
+		<%- include("parts/end.ejs") %>
+
+		<script src="/js/scripts/jquery-3.2.1.min.js"></script>
+		<script src="/js/scripts/socket.io.min.js"></script>
+		<script src="/js/script.js"></script>
+
+		<script>
+
+			const socket = io();
+
+			function updateModule(moduleType, moduleId) {
+				let hidden = $(event.target).closest(".hidden");
+
+				socket.emit("module_update", {
+					moduleType: moduleType,
+					moduleId: moduleId,
+					name: hidden.find("input[name=name]").val(),
+					secret: hidden.find("input[name=secret]").val(),
+					shared: $(".module").eq(0).find(".hidden").find(".shared-users > div").filter((index, div) => div.children[0].checked).map((index, div) => div.children[1].innerText).get(),
+					delete: hidden.find("input[name=delete]").prop("checked")
+				}, status => {
+					if(status === "name_invalid") {
+						notify("Name enthält ungültige Zeichen!", "error");
+					} else if(status === "secret_invalid") {
+						notify("Secret enthält ungültige Zeichen!", "error");
+					} else {
+						location.reload();
+					}
+				});
+			}
+
+			function shareModule(moduleType, moduleId) {
+				let target = event.target;
+				let innerHTML = target.innerHTML;
+				let onclick = target.onclick;
+
+				socket.emit("module_share", {
+					moduleType: moduleType,
+					moduleId: moduleId
+				}, code => {
+					let time = 60;
+					let interval = setInterval(task, 1000);
+					task();
+
+					function task() {
+						target.innerHTML = code + " " + time--;
+						if(time === -1) {
+							clearInterval(interval);
+							target.innerHTML = innerHTML;
+							target.onclick = onclick;
+						}
+					}
+
+					target.onclick = () => {
+						copyToClipboard(code);
+						notify("ShareToken kopiert!", "success");
+					}
+					notify("ShareToken wurde erstellt!<br>Erneut drücken zum <b>kopieren<b>", "success");
+				});
+			}
+
+			function addModule(moduleType) {
+				socket.emit("module_add", {
+					moduleType: moduleType,
+					name: $(event.target).closest(".hidden").find("input").val()
+				}, status => {
+					if(status === "name_invalid") {
+						notify("Name enthält ungültige Zeichen!", "error");
+					} else {
+						location.href = status;
+					}
+				});
+			}
+
+		</script>
+
+	</body>
+
+</html>

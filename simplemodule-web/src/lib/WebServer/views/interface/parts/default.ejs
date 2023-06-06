@@ -1,0 +1,63 @@
+<nav id="nav" onclick="if(event.x > 240) $('#nav').animate({left: '-100%'}, 250);">
+	<p id="logo"><img src="/img/logo.png" height="25px" width="25px" style="position: relative; top: 3px; margin-right: 3px;"> SimpleModule </p>
+
+	<ul>
+		<span> Allgemein </span>
+		<li><a href="/Dashboard/"<%- currentUrl == "/Dashboard/" ? ' class="active"' : "" %>> <i class="far fa-home"></i> Dashboard </a></li>
+		<li><a href="/Modules/"<%- currentUrl == "/Modules/" ? ' class="active"' : "" %>> <i class="far fa-list-ul"></i> Module </a></li>
+
+		<span> Module </span>
+		<%
+			if(Object.keys(user.modules).length > 0 || Object.keys(user.sharedModules).length > 0) {
+				for(let type in moduleManager.moduleTypes) {
+					let moduleType = moduleManager.moduleTypes[type];
+
+					if(user.modules.hasOwnProperty(moduleType.name) || user.sharedModules.hasOwnProperty(moduleType.name)) {
+						%> <li><a<%- currentUrl.startsWith("/" + moduleType.name) ? " class='active'" : "" %>> <i class="<%- moduleType.icon %>"></i> <%- moduleType.name %> <i class="fas fa-angle-down arrow<%- currentUrl.startsWith('/' + moduleType.name) ? ' rotate' : '' %>"></i></a> <%
+							%> <ul<%- currentUrl.startsWith("/" + moduleType.name) ? "" : ' style="display: none;"' %>> <%
+
+							if(user.modules.hasOwnProperty(moduleType.name)) {
+								user.modules[moduleType.name].forEach(moduleId => {
+									let module = moduleManager.getModule(moduleType.name, moduleId);
+									%> <li><a href="<%- '/' + module.type + '/' + module.id %>"<%- currentUrl == '/' + module.type + '/' + module.id ? " class='active'" : "" %>> <%- module.name %> </a></li> <%
+								});
+							}
+							if(user.sharedModules.hasOwnProperty(moduleType.name)) {
+								%> <span> Geteilte Module: </span> <%
+								user.sharedModules[moduleType.name].forEach(moduleId => {
+									let module = moduleManager.getModule(moduleType.name, moduleId);
+									%> <li><a href="<%- '/' + module.type + '/' + module.id %>"<%- currentUrl == '/' + module.type + '/' + module.id ? " class='active'" : "" %>> <%- module.name %> </a></li> <%
+								});
+							}
+
+							%> </ul> <%
+						%> </li><%
+					}
+				}
+			} else {
+				%> <li><span> Du besitzt noch keine Module </span></li> <%
+			}
+		%>
+
+		<span> <font color="#F44336"><%- language.getMessage("interface_nav_management"); %></font> </span>
+		<li><a> <i class="fal fa-question-circle"></i> Tickets </a></li>
+		<li><a> <i class="fal fa-toolbox"></i> Verwaltung </a></li>
+
+		<span> <%- language.getMessage("interface_nav_options"); %> </span>
+		<li><a href="/Settings/"<%- currentUrl == "/Settings/" ? ' class="active"' : '' %>> <i class="far fa-sliders-h"></i> <%- language.getMessage("interface_nav_settings"); %> </a></li>
+		<li><a href="/Support/"<%- currentUrl == "/Support/" ? ' class="active"' : '' %>> <i class="fal fa-envelope"></i> Support </a></li>
+		<li><a href="/Logout/"> <i class="far fa-sign-out"></i> <%- language.getMessage("interface_nav_exit"); %> </a></li>
+	</ul>
+
+	<p id="footer"> SimpleModule &copy; by ballerkind 2020 </p>
+</nav>
+
+<div id="content">
+
+	<div id="navbar">
+		<i class="far fa-stream" onclick="$('#nav').animate({left: 0}, 250);"></i>
+
+		<span style="float: right">
+			Angemeldet als <font color="#64C7E8"> <%- user.name %> </font> <span style="margin: 0 5px; color: #BDC3C7;">|</span> <i class="fa<%- appearance === "dark" ? "r" : "s" %> fa-lightbulb" onclick="toggleDarkMode();" style="cursor: pointer;"></i> <span style="margin: 0 5px; color: #BDC3C7;">|</span> <a href="/Logout/" class="far fa-sign-out" style="text-decoration: none; color: #fff;"></a>
+		</span>
+	</div>

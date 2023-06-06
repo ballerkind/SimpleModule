@@ -1,0 +1,32 @@
+/* ################################################################################# */
+/* STANDARD HTML TAGS */
+/* ################################################################################# */
+
+:root {
+	--nav-font-color: #000;
+	--nav-bg-color: #fff;
+}
+
+/* ################################################################################# */
+/* SECTIONS */
+/* ################################################################################# */
+
+section > .line {
+	background: #000;
+}
+
+section:nth-child(even) {
+	background: linear-gradient(rgba(44, 62, 80, 0.7), rgba(44, 62, 80, 0.8)), url("/img/welcome_2.jpg") center/cover no-repeat fixed;
+}
+
+section:nth-child(odd) {
+	border-color: #EEEEEE;
+}
+
+#home {
+	background: linear-gradient(rgba(44, 62, 80, 0.7), rgba(44, 62, 80, 0.8)), url("/img/welcome.jpg") center/cover no-repeat fixed;
+}
+
+#footer {
+	background: #2C3E50;
+}

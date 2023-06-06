@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title> Anmeldung - SimpleModule </title>
+
+		<link rel="stylesheet" href="/css/login.css">
+		<link rel="stylesheet" href="/css/login_<%- appearance %>.css">
+		<link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+		<link href="/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+	</head>
+
+
+	<body>
+
+		<div id="alert"></div>
+
+		<div id="background">
+			<div id="container">
+				<p> <img id="logo" src="/img/logo.png"> SimpleModule </p>
+
+				<div class="content">
+					<p> <%- language.getMessage("login_title"); %> </p>
+
+					<input name="name" placeholder="<%- language.getMessage('login_name'); %>" maxlength="16" onkeyup="event.keyCode == 13 ? login() : ''">
+					<input name="password" type="password" placeholder="<%- language.getMessage('login_password'); %>" onkeyup="event.keyCode == 13 ? login() : ''">
+
+					<div style="margin-bottom: 35px;">
+						<input name="remember" type="checkbox">
+						<span> Angemeldet bleiben? </span>
+					</div>
+					<button onclick="login();"> <%- language.getMessage("login_login"); %> </button>
+
+					<span> Du hast dein Passwort vergessen? </span>
+					<br>
+					<a href="/ResetPassword/"> Passwort zurücksetzen </a>
+					<br>
+					<br>
+					<span> Du hast noch keinen Account? </span>
+					<br>
+					<a href="/Register/"> Jetzt registrieren! </a>
+				</div>
+			</div>
+		</div>
+
+		<script src="/js/scripts/jquery-3.2.1.min.js"></script>
+		<script src="/js/scripts/socket.io.min.js"></script>
+		<script>
+
+			function login() {
+				$.post("/Login/", {
+					name: $("#container .content > input[name=name]").val(),
+					password: $("#container .content > input[name=password]").val(),
+					remember: $("#container .content > div > input[name=remember]").prop("checked")
+				}, status => {
+					let msg;
+
+					if(status === "error") {
+						msg = "<%- language.getMessage("login_message_error"); %>";
+					}
+
+					if(status === "not_verified") {
+						msg = "Dein Account ist noch nicht verifiziert! Bestätige bitte die E-Mail, die wir dir geschickt haben.";
+					}
+
+					if(status === "success") {
+						location.href = "/Dashboard/";
+					} else {
+						$("#alert").text(msg).css("top", "0");
+						$("#container .content > input").addClass("wrong");
+					}
+				});
+			}
+
+			$("#container .content > input").on("input", function() {
+				$("#container .content > input").removeClass("wrong");
+				$("#alert").css("top", "-100px");
+			});
+
+		</script>
+
+	</body>
+
+</html>
